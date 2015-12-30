@@ -136,7 +136,7 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 
 <p><code class="prettyprint">POST https://letmeknow.fi/api/v1/create_survey</code></p>
 
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="post-parameters">POST Parameters</h3>
 
 <table><thead>
 <tr>
@@ -219,7 +219,7 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
   -H <span class="s2">"Content-Type: application/json"</span>
   -X POST -d <span class="s1">'
     {
-        "survey_id_": "hHm9Zw"
+        "survey_id": "hHm9Zw"
     } 
 </span></code></pre>
 
@@ -248,7 +248,7 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 
 <p><code class="prettyprint">POST https://letmeknow.fi/api/v1/send_emails</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="post-parameters">POST Parameters</h3>
 
 <table><thead>
 <tr>
@@ -264,11 +264,74 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </tr>
 </tbody></table>
 
+<h2 id="return-survey-ratings">Return survey ratings</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"https://letmeknow.fi/api/v1/return_survey_rating"</span>
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+  -H <span class="s2">"X-Email: demo@demo.com"</span>
+  -H <span class="s2">"Content-Type: application/json"</span>
+  -X POST -d <span class="s1">'
+    {
+        "internal_ref": "salesperson.name",
+        "start_date":"2015-01-25",
+        "end_date":"2015-12-31",
+    } 
+</span></code></pre>
+
+<blockquote>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"internal_ref"</span><span class="p">:</span><span class="s2">"matti.myyja"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"start_date"</span><span class="p">:</span><span class="s2">"2015-01-01"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"end_date"</span><span class="p">:</span><span class="s2">"2015-12-31"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"survey_count"</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"results"</span><span class="p">:[</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint returns survey results for the given time period and given internal reference. Also the count of surveys during the given period is returned.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://letmeknow.fi/api/v1/return_survey_rating</code></p>
+
+<h3 id="post-parameters">POST Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type, format</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>internal_ref</td>
+<td>String, mandatory</td>
+<td>The internal reference of survey, from source systems</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Result period start date</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Result period end date</td>
+</tr>
+</tbody></table>
+
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>The LetMeKnow API uses the following error codes:</p>
 
 <table><thead>
 <tr>
@@ -278,7 +341,7 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>Bad Request &ndash; Your request is not correct</td>
 </tr>
 <tr>
 <td>401</td>
@@ -286,39 +349,19 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Forbidden &ndash; Not allowed to access</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The specified entity could not be found</td>
 </tr>
 <tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>422</td>
+<td>Cannot be processed &ndash; Request was ok, but cannot be processed.</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>Internal Server Error &ndash; Technical error</td>
 </tr>
 </tbody></table>
 
