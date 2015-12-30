@@ -98,7 +98,7 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"identification"</span><span class="p">:</span><span class="s2">"9Y9yRA"</span><span class="p">,</span><span class="w">
@@ -122,6 +122,14 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
 <p>This endpoint creates a new survey for the user.</p>
 
 <h3 id="http-request">HTTP Request</h3>
@@ -133,72 +141,126 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>Type, Format</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>identification</td>
+<td>String, optional</td>
+<td>Unique identification of survey. Can be left blank, and will then be generated.</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>subject</td>
+<td>String, mandatory</td>
+<td>Summary of survey. Shown to respondee.</td>
+</tr>
+<tr>
+<td>question</td>
+<td>String, mandatory</td>
+<td>Detaild question of survey. Shown to respondee.</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Survey&rsquo;s activation date.</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Survey&rsquo;s closing date, inclusive.</td>
+</tr>
+<tr>
+<td>email_topic</td>
+<td>String, optional</td>
+<td>Topic in email that is sent to respondee.</td>
+</tr>
+<tr>
+<td>email_text</td>
+<td>String, optional</td>
+<td>Text in email that is sent to respondee. Can include html tags for line breaks and paragraphs etc.</td>
+</tr>
+<tr>
+<td>internal_ref</td>
+<td>String, optional</td>
+<td>Reference for sender&rsquo;s system or later querying of results.</td>
+</tr>
+<tr>
+<td>surveytype</td>
+<td>rating, null; optional</td>
+<td>Type of survey. If rating, respondee has to rate on scale 1-5 and can give free format comments. If null, respondee has only free format comments.</td>
+</tr>
+<tr>
+<td>respondee_attributes.id</td>
+<td>String, optional</td>
+<td>Id of respondee, starting from 0. N respondees can be given.</td>
+</tr>
+<tr>
+<td>respondee_attributes.id.name</td>
+<td>String, optional</td>
+<td>Full name of respondee</td>
+</tr>
+<tr>
+<td>respondee_attributes.id.email</td>
+<td>String, optional</td>
+<td>Email of respondee</td>
+</tr>
+<tr>
+<td>respondee_attributes.id.destroy</td>
+<td>String, mandatory</td>
+<td>Default attribute, set to &ldquo;false&rdquo; when using API. Can be later used for updating.</td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
+<h2 id="send-emails">Send emails</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"https://letmeknow.fi/api/v1/send_emails"</span>
   -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
+  -H <span class="s2">"X-Email: demo@demo.com"</span>
+  -H <span class="s2">"Content-Type: application/json"</span>
+  -X POST -d <span class="s1">'
+    {
+        "survey_id_": "hHm9Zw"
+    } 
+</span></code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+<p>This endpoint sends emails to the respondees of survey identified by &lsquo;survey_id&rsquo;</p>
+
+<aside class="warning">Emails are sent to all respondees when this request is processed.</aside>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
+<p><code class="prettyprint">POST https://letmeknow.fi/api/v1/send_emails</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type, format</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>survey_id</td>
+<td>String, mandatory</td>
+<td>The ID of the survey</td>
 </tr>
 </tbody></table>
 
