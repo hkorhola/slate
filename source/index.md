@@ -1,13 +1,12 @@
 ---
-title: API Reference
+title: LetMeKnow API Reference
 
 language_tabs:
   - shell
-  - ruby
-  - python
+
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='mailto:tuki@letmeknow.fi'>Request for a Developer API Key</a>
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -18,95 +17,89 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the LetMeKnow API! You can use our API to automate your feedback processes and thus get more out of LetMeKnow service.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](http://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+API contains now the following basic functions:
+<ol>
+<li>Create survey for a user</li>
+<li>Send emails to survey's respondees</li>
+<li>Get ratings (1-5) for surveys for a specific period</li>
+</ol>
 
 # Authentication
 
-> To authorize, use this code:
+LetMeKnow uses API keys to allow access to the API. You can register a new LetMeKnow API key by contacting the support [LetMeKnow support](mailto:tuki@letmeknow.fi).
 
-```ruby
-require 'kittn'
+LetMeKnow expects for the API key and user's account id (email) to be included in all API requests to the server in a header that looks like the following:
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+`Authorization: 12345abcde` </br>
+`X-Email: demo@demo.com`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>12345abcde</code> with your personal API key and <code>demo@demo.com</code> with user's email address.
 </aside>
 
-# Kittens
+# Surveys
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+## Create survey
 
 ```shell
-curl "http://example.com/api/kittens"
+curl "https://letmeknow.fi/api/v1/create_survey"
   -H "Authorization: meowmeowmeow"
+  -H "X-Email: demo@demo.com"
+  -H "Content-Type: application/json"
+  -X POST -d '{
+ "survey": 
+ {
+   "subject" : "Sales meeting on 22.11.2015",
+   "question" : "Please rate our sales person N.N on your meeting on 22nd November",
+   "start_date" : "2015-11-22",
+   "end_date" : "2015-12-22",
+   "email_topic" : "Please rate our sales person N.N",
+   "email_text" : "<p>Hello</p> We would appreciate your feedback about our performance. </br> Please answer to survey linked in this email.</br> BR, Company X Sales lead",
+   "internal_ref" : "salesperson.name",
+   "surveytype" : "rating",
+   "respondees_attributes" :
+   {"0": 
+    {"name" : "Salesperson Example", 
+     "email" : "customer@demo.com",
+     "_destroy" : "false"
+ 	}
+   }
+ }
+}' 
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+"identification":"9Y9yRA",
+"survey":
+{
+"id":299,
+"subject":"Sales meeting on 22.11.2015",
+"description":null,
+"start_date":"2015-01-25",
+"end_date":"2015-12-31",
+"created_at":"2015-12-30T23:40:36.799+02:00",
+"updated_at":"2015-12-30T23:40:36.799+02:00",
+"identification":"9Y9yRA",
+"user_id":17,
+"question":"Please rate our sales person",
+"email_topic":"Please rate our sales person",
+"email_text":"\u003cp\u003eHello\u003c/p\u003e We would appreciate your feedback about our performance. \u003c/br\u003e Please answer to survey linked in this email.\u003c/br\u003e BR, Company X Sales lead",
+"internal_ref":"salesperson.name",
+"surveytype":"rating"
+}
+}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint creates a new survey for the user.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST https://letmeknow.fi/api/v1/create_survey`
 
 ### Query Parameters
 
@@ -165,4 +158,3 @@ This endpoint retrieves a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to retrieve
-
