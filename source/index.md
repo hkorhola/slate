@@ -17,7 +17,7 @@ search: true
 
 # Introduction
 
-Welcome to the LetMeKnow API! You can use our API to automate your feedback processes and thus get more out of LetMeKnow service.
+Welcome to the LetMeKnow API! You can use our API to automate your feedback processes and thus get more out of LetMeKnow service. Don't hesitate to ask, if any questions [support](mailto:tuki@letmeknow.fi). 
 
 API contains now the following basic functions:
 <ol>
