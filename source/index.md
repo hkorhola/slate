@@ -109,7 +109,7 @@ This endpoint creates a new survey for the user.
 
 `POST https://letmeknow.fi/api/v1/create_survey`
 
-### Query Parameters
+### POST Parameters
 
 Parameter | Type, Format | Description
 --------- | ------- | -----------
@@ -136,7 +136,7 @@ curl "https://letmeknow.fi/api/v1/send_emails"
   -H "Content-Type: application/json"
   -X POST -d '
   	{
-		"survey_id_": "hHm9Zw"
+		"survey_id": "hHm9Zw"
 	} 
 ```
 
@@ -165,9 +165,59 @@ This endpoint sends emails to the respondees of survey identified by 'survey_id'
 
 `POST https://letmeknow.fi/api/v1/send_emails`
 
-### URL Parameters
+### POST Parameters
 
 Parameter | Type, format | Description
 --------- | ----------- | -----------
 survey_id | String, mandatory | The ID of the survey
 
+
+## Return survey ratings 
+
+```shell
+curl "https://letmeknow.fi/api/v1/return_survey_rating"
+  -H "Authorization: meowmeowmeow"
+  -H "X-Email: demo@demo.com"
+  -H "Content-Type: application/json"
+  -X POST -d '
+  	{
+		"internal_ref": "salesperson.name",
+		"start_date":"2015-01-25",
+		"end_date":"2015-12-31",
+	} 
+```
+
+> The above command returns HTTP status 200 and JSON structured like this:
+
+```json
+{
+	"internal_ref":"matti.myyja",
+	"start_date":"2015-01-01",
+	"end_date":"2015-12-31",
+	"survey_count":19,
+	"results":[4.0,2.0,1.0,3.0,3.0,2.0,3.0]
+}
+```
+
+> or in error proper HTTP status code and JSON:
+
+```json
+{
+  "message": "some error message"
+}
+```
+
+This endpoint returns survey results for the given time period and given internal reference. Also the count of surveys during the given period is returned.
+
+
+### HTTP Request
+
+`POST https://letmeknow.fi/api/v1/return_survey_rating`
+
+### POST Parameters
+
+Parameter | Type, format | Description
+--------- | ----------- | -----------
+internal_ref | String, mandatory | The internal reference of survey, from source systems
+start_date | Date, YYYY-MM-DD, mandatory | Result period start date
+end_date | Date, YYYY-MM-DD, mandatory | Result period end date
