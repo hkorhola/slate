@@ -1,0 +1,376 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>LetMeKnow API Reference</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["shell"]);
+        });
+      </script>
+  </head>
+
+  <body class="index">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='mailto:tuki@letmeknow.fi'>Request for a Developer API Key</a></li>
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+
+<p>Welcome to the LetMeKnow API! You can use our API to automate your feedback processes and thus get more out of LetMeKnow service. Don&rsquo;t hesitate to ask, if any questions <a href="mailto:tuki@letmeknow.fi">support</a>. </p>
+
+<p>API contains now the following basic functions:
+<ol>
+<li>Create survey for a user</li>
+<li>Send emails to survey&rsquo;s respondees</li>
+<li>Get ratings (1-5) for surveys for a specific period</li>
+</ol></p>
+
+<h1 id="authentication">Authentication</h1>
+
+<p>LetMeKnow uses API keys to allow access to the API. You can register a new LetMeKnow API key by contacting the support <a href="mailto:tuki@letmeknow.fi">LetMeKnow support</a>.</p>
+
+<p>LetMeKnow expects for the API key and user&rsquo;s account id (email) to be included in all API requests to the server in a header that looks like the following:</p>
+
+<p><code class="prettyprint">Authorization: 12345abcde</code> </br>
+<code class="prettyprint">X-Email: demo@demo.com</code></p>
+
+<aside class="notice">
+You must replace <code>12345abcde</code> with your personal API key and <code>demo@demo.com</code> with user&rsquo;s email address.
+</aside>
+
+<h1 id="surveys">Surveys</h1>
+
+<h2 id="create-survey">Create survey</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"https://letmeknow.fi/api/v1/create_survey"</span>
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+  -H <span class="s2">"X-Email: demo@demo.com"</span>
+  -H <span class="s2">"Content-Type: application/json"</span>
+  -X POST -d <span class="s1">'{
+ "survey": 
+ {
+   "subject" : "Sales meeting on 22.11.2015",
+   "question" : "Please rate our sales person N.N on your meeting on 22nd November",
+   "start_date" : "2015-11-22",
+   "end_date" : "2015-12-22",
+   "email_topic" : "Please rate our sales person N.N",
+   "email_text" : "&lt;p&gt;Hello&lt;/p&gt; We would appreciate your feedback about our performance. &lt;/br&gt; Please answer to survey linked in this email.&lt;/br&gt; BR, Company X Sales lead",
+   "internal_ref" : "salesperson.name",
+   "surveytype" : "rating",
+   "respondees_attributes" :
+   {"0": 
+    {"name" : "Salesperson Example", 
+     "email" : "customer@demo.com",
+     "_destroy" : "false"
+    }
+   }
+ }
+}'</span> 
+</code></pre>
+
+<blockquote>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+</span><span class="nt">"identification"</span><span class="p">:</span><span class="s2">"9Y9yRA"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"survey"</span><span class="p">:</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="nt">"id"</span><span class="p">:</span><span class="mi">299</span><span class="p">,</span><span class="w">
+</span><span class="nt">"subject"</span><span class="p">:</span><span class="s2">"Sales meeting on 22.11.2015"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"description"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+</span><span class="nt">"start_date"</span><span class="p">:</span><span class="s2">"2015-01-25"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"end_date"</span><span class="p">:</span><span class="s2">"2015-12-31"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"2015-12-30T23:40:36.799+02:00"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"2015-12-30T23:40:36.799+02:00"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"identification"</span><span class="p">:</span><span class="s2">"9Y9yRA"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"user_id"</span><span class="p">:</span><span class="mi">17</span><span class="p">,</span><span class="w">
+</span><span class="nt">"question"</span><span class="p">:</span><span class="s2">"Please rate our sales person"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"email_topic"</span><span class="p">:</span><span class="s2">"Please rate our sales person"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"email_text"</span><span class="p">:</span><span class="s2">"\u003cp\u003eHello\u003c/p\u003e We would appreciate your feedback about our performance. \u003c/br\u003e Please answer to survey linked in this email.\u003c/br\u003e BR, Company X Sales lead"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"internal_ref"</span><span class="p">:</span><span class="s2">"salesperson.name"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"surveytype"</span><span class="p">:</span><span class="s2">"rating"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint creates a new survey for the user.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://letmeknow.fi/api/v1/create_survey</code></p>
+
+<h3 id="post-parameters">POST Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type, Format</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>identification</td>
+<td>String, optional</td>
+<td>Unique identification of survey. Can be left blank, and will then be generated.</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>String, mandatory</td>
+<td>Summary of survey. Shown to respondee.</td>
+</tr>
+<tr>
+<td>question</td>
+<td>String, mandatory</td>
+<td>Detaild question of survey. Shown to respondee.</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Survey&rsquo;s activation date.</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Survey&rsquo;s closing date, inclusive.</td>
+</tr>
+<tr>
+<td>email_topic</td>
+<td>String, optional</td>
+<td>Topic in email that is sent to respondee.</td>
+</tr>
+<tr>
+<td>email_text</td>
+<td>String, optional</td>
+<td>Text in email that is sent to respondee. Can include html tags for line breaks and paragraphs etc.</td>
+</tr>
+<tr>
+<td>internal_ref</td>
+<td>String, optional</td>
+<td>Reference for sender&rsquo;s system or later querying of results.</td>
+</tr>
+<tr>
+<td>surveytype</td>
+<td>rating, null; optional</td>
+<td>Type of survey. If rating, respondee has to rate on scale 1-5 and can give free format comments. If null, respondee has only free format comments.</td>
+</tr>
+<tr>
+<td>respondee_attributes.id</td>
+<td>String, optional</td>
+<td>Id of respondee, starting from 0. N respondees can be given.</td>
+</tr>
+<tr>
+<td>respondee_attributes.id.name</td>
+<td>String, optional</td>
+<td>Full name of respondee</td>
+</tr>
+<tr>
+<td>respondee_attributes.id.email</td>
+<td>String, optional</td>
+<td>Email of respondee</td>
+</tr>
+<tr>
+<td>respondee_attributes.id.destroy</td>
+<td>String, mandatory</td>
+<td>Default attribute, set to &ldquo;false&rdquo; when using API. Can be later used for updating.</td>
+</tr>
+</tbody></table>
+
+<h2 id="send-emails">Send emails</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"https://letmeknow.fi/api/v1/send_emails"</span>
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+  -H <span class="s2">"X-Email: demo@demo.com"</span>
+  -H <span class="s2">"Content-Type: application/json"</span>
+  -X POST -d <span class="s1">'
+    {
+        "survey_id": "hHm9Zw"
+    } 
+</span></code></pre>
+
+<blockquote>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint sends emails to the respondees of survey identified by &lsquo;survey_id&rsquo;</p>
+
+<aside class="warning">Emails are sent to all respondees when this request is processed.</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://letmeknow.fi/api/v1/send_emails</code></p>
+
+<h3 id="post-parameters">POST Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type, format</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>survey_id</td>
+<td>String, mandatory</td>
+<td>The ID of the survey</td>
+</tr>
+</tbody></table>
+
+<h2 id="return-survey-ratings">Return survey ratings</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"https://letmeknow.fi/api/v1/return_survey_rating"</span>
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+  -H <span class="s2">"X-Email: demo@demo.com"</span>
+  -H <span class="s2">"Content-Type: application/json"</span>
+  -X POST -d <span class="s1">'
+    {
+        "internal_ref": "salesperson.name",
+        "start_date":"2015-01-25",
+        "end_date":"2015-12-31",
+    } 
+</span></code></pre>
+
+<blockquote>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"internal_ref"</span><span class="p">:</span><span class="s2">"matti.myyja"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"start_date"</span><span class="p">:</span><span class="s2">"2015-01-01"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"end_date"</span><span class="p">:</span><span class="s2">"2015-12-31"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"survey_count"</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"results"</span><span class="p">:[</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint returns survey results for the given time period and given internal reference. Also the count of surveys during the given period is returned.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://letmeknow.fi/api/v1/return_survey_rating</code></p>
+
+<h3 id="post-parameters">POST Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type, format</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>internal_ref</td>
+<td>String, mandatory</td>
+<td>The internal reference of survey, from source systems</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Result period start date</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Result period end date</td>
+</tr>
+</tbody></table>
+
+          <h1 id="errors">Errors</h1>
+
+<p>The LetMeKnow API uses the following error codes:</p>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad Request &ndash; Your request is not correct</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized &ndash; Your API key is wrong</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden &ndash; Not allowed to access</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found &ndash; The specified entity could not be found</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Cannot be processed &ndash; Request was ok, but cannot be processed.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error &ndash; Technical error</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
