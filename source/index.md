@@ -137,7 +137,7 @@ curl "https://letmeknow.fi/api/v1/send_emails"
   -X POST -d '
   	{
 		"survey_id": "hHm9Zw"
-	} 
+	} '
 ```
 
 > The above command returns HTTP status 200 and JSON structured like this:
