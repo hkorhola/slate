@@ -232,6 +232,6 @@ Parameter | Type, format | Description
 --------- | ----------- | -----------
 internal_ref | String, mandatory | The internal reference of survey, from source systems
 start_date | Date, YYYY-MM-DD, mandatory | Result period start date
-end_date | Date, YYYY-MM-DD, mandatory | Result period end date
+end_date | Date, YYYY-MM-DD, mandatory | Result period end date.
 =======
 
