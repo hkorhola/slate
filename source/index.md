@@ -133,10 +133,6 @@ respondee_attributes.id.name | String, optional | Full name of respondee
 respondee_attributes.id.email | String, optional | Email of respondee
 respondee_attributes.id.destroy | String, mandatory | Default attribute, set to “false” when using API. Can be later used for updating.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
 ## Send emails
 
 This endpoint sends emails to the respondees of survey identified by ‘survey_id’
@@ -178,7 +174,7 @@ curl "https://letmeknow.fi/api/v1/send_emails"
 ### POST Parameters
 
 Parameter | Type, M/O/C | Description
---------- | -----------
+--------- | ----------- | ----------- 
 survey_id | String, mandatory | The ID of the survey
 
 
@@ -225,19 +221,10 @@ curl "https://letmeknow.fi/api/v1/return_survey_rating"
 ### POST Parameters
 
 Parameter | Type, M/O/C | Description
---------- | -----------
+--------- | ----------- | ----------- 
 internal_ref | String, mandatory | The internal reference of survey, from source systems
 start_date | Date, YYYY-MM-DD, mandatory | Result period start date
 end_date | Date, YYYY-MM-DD, mandatory | Result period end date
 
-## Errors
 
-Error code | Meaning
---------- | -----------
-400 | Bad Request – Your request is not correct
-401 | Unauthorized – Your API key is wrong
-403 | Forbidden – Not allowed to access
-404 | Not Found – The specified entity could not be found
-422 | Cannot be processed – Request was ok, but cannot be processed.
-500 | Internal Server Error – Technical error
 
