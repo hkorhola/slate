@@ -53,6 +53,7 @@ curl "https://letmeknow.fi/api/v1/create_survey"
  {
    "subject" : "Sales meeting on 22.11.2015",
    "question" : "Please rate our sales person N.N on your meeting on 22nd November",
+   "question2": "Give us further ideas",
    "start_date" : "2015-11-22",
    "end_date" : "2015-12-22",
    "email_topic" : "Please rate our sales person N.N",
@@ -60,6 +61,8 @@ curl "https://letmeknow.fi/api/v1/create_survey"
    "internal_ref" : "salesperson.name",
    "surveytype" : "rating",
    "sendreminder": "true",
+   "picturepath": "http://path.to.picture/image.jpg",
+   "locale": "en",   
    "respondees_attributes" :
    {"0": 
     {"name" : "Salesperson Example", 
@@ -71,7 +74,7 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 }' 
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns HTTP status 200 and JSON structured like this:
 
 ```json
 {
@@ -88,16 +91,25 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 "identification":"9Y9yRA",
 "user_id":17,
 "question":"Please rate our sales person",
+"question2" : "Give us further ideas",
 "email_topic":"Please rate our sales person",
 "email_text":"\u003cp\u003eHello\u003c/p\u003e We would appreciate your feedback about our performance. \u003c/br\u003e Please answer to survey linked in this email.\u003c/br\u003e BR, Company X Sales lead",
 "internal_ref":"salesperson.name",
 "surveytype":"rating",
-"sendreminder": "true"
+"sendreminder": "true",
+"picturepath": "http://path.to.picture/image.jpg",
+"locale": "en"  
 }
 }
 ```
 
-This endpoint creates a new survey for the user.
+> or in error proper HTTP status code and JSON:
+
+```json
+{
+  "message": "some error message"
+}
+```
 
 ### HTTP Request
 
@@ -105,58 +117,127 @@ This endpoint creates a new survey for the user.
 
 ### Query Parameters
 
-Parameter | Default | Description
+Parameter | Type, M/O/C | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+identification | String, optional | Unique identification of survey. Can be left blank, and will then be generated.
+subject | String, mandatory | Summary of survey. Shown to respondee.
+question | String, mandatory | Detaild question of survey. Shown to respondee.
+start_date | Date, YYYY-MM-DD, mandatory | Survey’s activation date.
+end_date | Date, YYYY-MM-DD, mandatory | Survey’s closing date, inclusive.
+email_topic | String, optional | Topic in email that is sent to respondee.
+email_text | String, optional | Text in email that is sent to respondee. Can include html tags for line breaks and paragraphs etc.
+internal_ref | String, optional | Reference for sender’s system or later querying of results.
+surveytype | rating, null; optional | Type of survey. If rating, respondee has to rate on scale 1-5 and can give free format comments. If null, respondee has only free format comments.
+respondee_attributes.id | String, optional | Id of respondee, starting from 0. N respondees can be given.
+respondee_attributes.id.name | String, optional | Full name of respondee
+respondee_attributes.id.email | String, optional | Email of respondee
+respondee_attributes.id.destroy | String, mandatory | Default attribute, set to “false” when using API. Can be later used for updating.
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
 </aside>
 
-## Get a Specific Kitten
+## Send emails
 
-```ruby
-require 'kittn'
+This endpoint sends emails to the respondees of survey identified by ‘survey_id’
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+<aside class="warning">Emails are sent to all respondees when this request is processed.</aside>
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
 
 ```shell
-curl "http://example.com/api/kittens/2"
+curl "https://letmeknow.fi/api/v1/send_emails"
   -H "Authorization: meowmeowmeow"
+  -H "X-Email: demo@demo.com"
+  -H "Content-Type: application/json"
+  -X POST -d '
+    {
+        "survey_id": "hHm9Zw"
+    }
+}' 
 ```
 
-> The above command returns JSON structured like this:
-
+> The above command returns HTTP status 200 and JSON structured like this:
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "success": "true"
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+> or in error proper HTTP status code and JSON:
+```json
+{
+  "success": "false",
+  "message": "some error message"
+}
+```
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST https://letmeknow.fi/api/v1/send_emails`
 
-### URL Parameters
+### POST Parameters
 
-Parameter | Description
+Parameter | Type, M/O/C | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+survey_id | String, mandatory | The ID of the survey
+
+
+## Return survey ratings
+
+This endpoint returns survey results for the given time period and given internal reference. Also the count of surveys during the given period is returned.
+
+
+```shell
+curl "https://letmeknow.fi/api/v1/return_survey_rating"
+  -H "Authorization: meowmeowmeow"
+  -H "X-Email: demo@demo.com"
+  -H "Content-Type: application/json"
+  -X POST -d '
+    {
+        "internal_ref": "salesperson.name",
+        "start_date":"2015-01-25",
+        "end_date":"2015-12-31",
+    }' 
+```
+
+> The above command returns HTTP status 200 and JSON structured like this:
+```json
+{
+    "internal_ref":"matti.myyja",
+    "start_date":"2015-01-01",
+    "end_date":"2015-12-31",
+    "survey_count":19,
+    "results":[4.0,2.0,1.0,3.0,3.0,2.0,3.0]
+}
+```
+
+> or in error proper HTTP status code and JSON:
+```json
+{
+  "message": "some error message"
+}
+```
+
+### HTTP Request
+
+`POST https://letmeknow.fi/api/v1/send_emails`
+
+### POST Parameters
+
+Parameter | Type, M/O/C | Description
+--------- | -----------
+internal_ref | String, mandatory | The internal reference of survey, from source systems
+start_date | Date, YYYY-MM-DD, mandatory | Result period start date
+end_date | Date, YYYY-MM-DD, mandatory | Result period end date
+
+## Errors
+
+Error code | Meaning
+--------- | -----------
+400 | Bad Request – Your request is not correct
+401 | Unauthorized – Your API key is wrong
+403 | Forbidden – Not allowed to access
+404 | Not Found – The specified entity could not be found
+422 | Cannot be processed – Request was ok, but cannot be processed.
+500 | Internal Server Error – Technical error
+
