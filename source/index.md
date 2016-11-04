@@ -63,6 +63,8 @@ curl "https://letmeknow.fi/api/v1/create_survey"
    "email_text" : "<p>Hello</p> We would appreciate your feedback about our performance. </br> Please answer to survey linked in this email.</br> BR, Company X Sales lead",
    "internal_ref" : "salesperson.name",
    "surveytype" : "rating",
+   "picture_path" : "http://path.to.picture/image.jpg",
+   "sendreminder" : "true",
    "respondees_attributes" :
    {"0": 
     {"name" : "Salesperson Example", 
