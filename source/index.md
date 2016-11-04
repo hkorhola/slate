@@ -17,7 +17,11 @@ search: true
 
 # Introduction
 
+<<<<<<< HEAD
 Welcome to the LetMeKnow API! You can use our API to automate your feedback processes and thus get more out of LetMeKnow service. Don't hesitate to ask, if any questions [support](mailto:tuki@letmeknow.fi). 
+=======
+Welcome to the LetMeKnow API! You can use our API to automate your feedback processes and thus get more out of LetMeKnow service.
+>>>>>>> c13a9330138002abc055b86b6b80dbb47764706b
 
 API contains now the following basic functions:
 <ol>
@@ -70,7 +74,11 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 }' 
 ```
 
+<<<<<<< HEAD
 > The above command returns HTTP status 200 and JSON structured like this:
+=======
+> The above command returns JSON structured like this:
+>>>>>>> c13a9330138002abc055b86b6b80dbb47764706b
 
 ```json
 {
@@ -95,6 +103,7 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 }
 ```
 
+<<<<<<< HEAD
 > or in error proper HTTP status code and JSON:
 
 ```json
@@ -103,12 +112,15 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 }
 ```
 
+=======
+>>>>>>> c13a9330138002abc055b86b6b80dbb47764706b
 This endpoint creates a new survey for the user.
 
 ### HTTP Request
 
 `POST https://letmeknow.fi/api/v1/create_survey`
 
+<<<<<<< HEAD
 ### POST Parameters
 
 Parameter | Type, Format | Description
@@ -221,3 +233,5 @@ Parameter | Type, format | Description
 internal_ref | String, mandatory | The internal reference of survey, from source systems
 start_date | Date, YYYY-MM-DD, mandatory | Result period start date
 end_date | Date, YYYY-MM-DD, mandatory | Result period end date
+=======
+
