@@ -59,6 +59,7 @@ curl "https://letmeknow.fi/api/v1/create_survey"
    "email_text" : "<p>Hello</p> We would appreciate your feedback about our performance. </br> Please answer to survey linked in this email.</br> BR, Company X Sales lead",
    "internal_ref" : "salesperson.name",
    "surveytype" : "rating",
+   "sendreminder": "true",
    "respondees_attributes" :
    {"0": 
     {"name" : "Salesperson Example", 
@@ -90,7 +91,8 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 "email_topic":"Please rate our sales person",
 "email_text":"\u003cp\u003eHello\u003c/p\u003e We would appreciate your feedback about our performance. \u003c/br\u003e Please answer to survey linked in this email.\u003c/br\u003e BR, Company X Sales lead",
 "internal_ref":"salesperson.name",
-"surveytype":"rating"
+"surveytype":"rating",
+"sendreminder": "true"
 }
 }
 ```
