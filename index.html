@@ -218,10 +218,6 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
 <h2 id="send-emails">Send emails</h2>
 
 <p>This endpoint sends emails to the respondees of survey identified by ‘survey_id’</p>
@@ -261,9 +257,19 @@ Remember — a happy kitten is an authenticated kitten!
 
 <h3 id="post-parameters">POST Parameters</h3>
 
-<p>Parameter | Type, M/O/C | Description
-&mdash;&mdash;&mdash; | &mdash;&mdash;&mdash;&ndash;
-survey_id | String, mandatory | The ID of the survey</p>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type, M/O/C</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>survey_id</td>
+<td>String, mandatory</td>
+<td>The ID of the survey</td>
+</tr>
+</tbody></table>
 
 <h2 id="return-survey-ratings">Return survey ratings</h2>
 
@@ -306,13 +312,31 @@ survey_id | String, mandatory | The ID of the survey</p>
 
 <h3 id="post-parameters">POST Parameters</h3>
 
-<p>Parameter | Type, M/O/C | Description
-&mdash;&mdash;&mdash; | &mdash;&mdash;&mdash;&ndash;
-internal_ref | String, mandatory | The internal reference of survey, from source systems
-start_date | Date, YYYY-MM-DD, mandatory | Result period start date
-end_date | Date, YYYY-MM-DD, mandatory | Result period end date</p>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type, M/O/C</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>internal_ref</td>
+<td>String, mandatory</td>
+<td>The internal reference of survey, from source systems</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Result period start date</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>Date, YYYY-MM-DD, mandatory</td>
+<td>Result period end date</td>
+</tr>
+</tbody></table>
 
-<h2 id="errors">Errors</h2>
+          <h1 id="errors">Errors</h1>
 
 <table><thead>
 <tr>
@@ -343,64 +367,6 @@ end_date | Date, YYYY-MM-DD, mandatory | Result period end date</p>
 <tr>
 <td>500</td>
 <td>Internal Server Error – Technical error</td>
-</tr>
-</tbody></table>
-
-          <h1 id="errors">Errors</h1>
-
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
-
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
 </tr>
 </tbody></table>
 
