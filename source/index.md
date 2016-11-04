@@ -100,7 +100,9 @@ curl "https://letmeknow.fi/api/v1/create_survey"
 "email_topic":"Please rate our sales person",
 "email_text":"\u003cp\u003eHello\u003c/p\u003e We would appreciate your feedback about our performance. \u003c/br\u003e Please answer to survey linked in this email.\u003c/br\u003e BR, Company X Sales lead",
 "internal_ref":"salesperson.name",
-"surveytype":"rating"
+"surveytype":"rating",
+"picture_path" : "http://path.to.picture/image.jpg",
+"sendreminder" : "true"
 }
 }
 ```
