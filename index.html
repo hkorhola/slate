@@ -193,8 +193,18 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </tr>
 <tr>
 <td>surveytype</td>
-<td>rating, null; optional</td>
-<td>Type of survey. If rating, respondee has to rate on scale 1-5 and can give free format comments. If null, respondee has only free format comments.</td>
+<td>rating, rating_2_q, null; optional</td>
+<td>Type of survey. If rating, respondee has to rate on scale 1-5 and can give free format comments. If rating_2_q, then survey has rating and two free format questions. If null, respondee has only free format comments.</td>
+</tr>
+<tr>
+<td>sendreminder</td>
+<td>Boolean, optional</td>
+<td>Defines whether a reminder email is sent to respondees 3 days after first email. This doesn&rsquo;t take into account who of the respondees have answered, it&rsquo;s sent to everyone.</td>
+</tr>
+<tr>
+<td>picturepath</td>
+<td>String, optional</td>
+<td>Image path for survey. If image path is set, the image is used on response page when respondee answers to survey. Note that if image is set through UI, it overrides this imagepath image.</td>
 </tr>
 <tr>
 <td>respondee_attributes.id</td>
@@ -235,21 +245,21 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </code></pre>
 
 <blockquote>
-<p>The above command returns HTTP status 200 and JSON structured like this:
-<code class="prettyprint">json
-{
-  &quot;success&quot;: &quot;true&quot;
-}
-</code></p>
-
-<p>or in error proper HTTP status code and JSON:
-<code class="prettyprint">json
-{
-  &quot;success&quot;: &quot;false&quot;,
-  &quot;message&quot;: &quot;some error message&quot;
-}
-</code></p>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
 </blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -287,24 +297,24 @@ You must replace <code>12345abcde</code> with your personal API key and <code>de
 </code></pre>
 
 <blockquote>
-<p>The above command returns HTTP status 200 and JSON structured like this:
-<code class="prettyprint">json
-{
-    &quot;internal_ref&quot;:&quot;matti.myyja&quot;,
-    &quot;start_date&quot;:&quot;2015-01-01&quot;,
-    &quot;end_date&quot;:&quot;2015-12-31&quot;,
-    &quot;survey_count&quot;:19,
-    &quot;results&quot;:[4.0,2.0,1.0,3.0,3.0,2.0,3.0]
-}
-</code></p>
-
-<p>or in error proper HTTP status code and JSON:
-<code class="prettyprint">json
-{
-  &quot;message&quot;: &quot;some error message&quot;
-}
-</code></p>
+<p>The above command returns HTTP status 200 and JSON structured like this:</p>
 </blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"internal_ref"</span><span class="p">:</span><span class="s2">"matti.myyja"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"start_date"</span><span class="p">:</span><span class="s2">"2015-01-01"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"end_date"</span><span class="p">:</span><span class="s2">"2015-12-31"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"survey_count"</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"results"</span><span class="p">:[</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>or in error proper HTTP status code and JSON:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some error message"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
 
