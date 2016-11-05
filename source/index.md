@@ -129,6 +129,7 @@ email_text | String, optional | Text in email that is sent to respondee. Can inc
 internal_ref | String, optional | Reference for sender’s system or later querying of results.
 surveytype | rating, rating_2_q, null; optional | Type of survey. If rating, respondee has to rate on scale 1-5 and can give free format comments. If rating_2_q, then survey has rating and two free format questions. If null, respondee has only free format comments.
 sendreminder | Boolean, optional | Defines whether a reminder email is sent to respondees 3 days after first email. This doesn't take into account who of the respondees have answered, it's sent to everyone.
+locale | String, optional | Language of survey's response page; labels that the respondee sees when answering. ISO language codes are used, except Norwegian is "nor" instead of "no".
 picturepath | String, optional | Image path for survey. If image path is set, the image is used on response page when respondee answers to survey. Note that if image is set through UI, it overrides this imagepath image.
 respondee_attributes.id | String, optional | Id of respondee, starting from 0. N respondees can be given.
 respondee_attributes.id.name | String, optional | Full name of respondee
